@@ -1,0 +1,101 @@
+.header {
+    background-color: #003580;
+    color: white;
+    display: flex;
+    justify-content: center;
+    position: relative;
+
+    .container {
+        width: 100%;
+        max-width: 1024px;
+        margin: 20px 0 100px 0;
+
+        .list {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 50px;
+
+            
+            .item {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .item {
+                &.active {
+                    border: 1px solid white;
+                    padding: 10px;
+                    border-radius: 20px;
+                }
+            }
+        }
+
+        .title {
+            font-size: 50px;
+        }
+
+        .description {
+            font-size: 25px;
+            margin: 20px 0;
+
+        }
+
+        .button {
+            background-color: #0071c2;
+            color: white;
+            font-weight: 500;
+            border: none;
+            padding: 10px;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+
+        .search {
+            height: 30px;
+            background-color: white;
+            border: 3px solid #febb02;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 10px 0px;
+            border-radius: 5px;
+            position: absolute;
+            bottom: -25px;
+            width: 100%;
+            max-width: 1042px;
+
+            .item {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+
+                .icon {
+                    color: lightgray;
+                }
+
+                .input {
+                    border: none;
+                    outline: none;
+                }
+    
+                .text {
+                    color: lightgray;
+                    cursor: pointer;
+                }
+    
+                .button {
+                    background-color: #0071c2;
+                    color: white;
+                    font-weight: 500;
+                    border: none;
+                    padding: 10px;
+                    border-radius: 15px;
+                    cursor: pointer;
+                }
+
+            }
+            
+        }
+    }
+}
