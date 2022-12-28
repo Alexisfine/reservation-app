@@ -5,25 +5,45 @@ import {faBed, faPlane, faCar, faTaxi, faCalendarDays, faPerson} from '@fortawes
 import {DateRange} from 'react-date-range';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
-import { addDays } from 'date-fns/esm';
+import { addDays, format} from 'date-fns/esm';
 
 interface DateTime {
     startDate?: Date | undefined,
     endDate?: Date | undefined,
     key?: string | undefined
 }
-const Header = () => {
+
+type HeaderProps = {
+    type?: string
+}
+const Header = ({type}:HeaderProps) => {
+    const [openDate, setOpenDate] = useState(false);
     const [date, setDate] = useState<DateTime>(
         {
         startDate: new Date(),
-        endDate: addDays(new Date(), 5),
+        endDate: addDays(new Date(), 3),
         key: 'selection'
         }
     )
+    const [openOptions, setOpenOptions] = useState(false);
+    const [options, setOptions] = useState({
+        adult: 1,
+        children: 0,
+        roomNumber: 1
+    })
+
+    const handleOptions = (name:'adult' | 'children' |'roomNumber', 
+                            operation: 'i' | 'd') => {
+        setOptions(prev => {
+            return {...prev, [name]: operation === 'i' ? options[name] + 1 : options[name] - 1}
+        })
+    }
+    console.log(type);
+
 
   return (
     <div className="header">
-        <div className="container">
+        <div className={type === 'list' ? "container lightMode" : "container"}>
         <div className="list">
             <div className="item active">
                 <FontAwesomeIcon icon={faBed}/>
@@ -46,7 +66,7 @@ const Header = () => {
                 <span>taxis</span>
             </div>
         </div>
-        <h1 className="title">Find your next stay</h1>
+        {type !=='list' && <><h1 className="title">Find your next stay</h1>
         <p className="description">Search low prices on hotels, homes and much more...</p>
         <button className="button">Sign in / Register</button>
         <div className="search">
@@ -56,22 +76,57 @@ const Header = () => {
             </div>
             <div className="item">
                 <FontAwesomeIcon icon={faCalendarDays} className="icon"></FontAwesomeIcon>
-                <span className='text'>date to date</span>
-                <DateRange 
+                <span className='text' onClick={() => setOpenDate(!openDate)}> 
+                {`${format(date.startDate!, "MM/dd/yyyy")} to 
+                    ${format(date.endDate!, "MM/dd/yyyy")}`}
+                    </span>
+                {openDate && <DateRange 
                     editableDateInputs={true} 
                     onChange={item => setDate(item.selection)}
                     moveRangeOnFirstSelection={false}
                     ranges={[date]}
-                    />
+                    className="date"
+                    /> }
             </div>
             <div className="item">
                 <FontAwesomeIcon icon={faPerson} className="icon"></FontAwesomeIcon>
-                <span className='text'>2 adults 0 children 1 room</span>
+                <span className='text' onClick={()=>setOpenOptions(!openOptions)}>
+                    {`${options.adult} adult - ${options.children} children - ${options.roomNumber} room`}</span>
+                    {openOptions && <div className='options'>
+                        <div className="item">
+                            <span className='text'>Adult</span>
+                            <div className="counter">
+                                <button className="button" disabled={options.adult <= 1}
+                                onClick={()=>handleOptions("adult", "d")}>-</button>
+                                <span className='number'>{options.adult}</span>
+                                <button className="button" onClick={()=>handleOptions("adult", "i")}>+</button>
+                            </div>
+                            
+                        </div>
+                        <div className="item">
+                            <span className='text'>Children</span>
+                            <div className="counter">
+                                <button className="button" disabled={options.children <= 0}
+                                onClick={()=>handleOptions("children", "d")}>-</button>
+                                <span className='number'>{options.children}</span>
+                                <button className="button" onClick={()=>handleOptions("children", "i")}>+</button>
+                            </div>
+                        </div>
+                        <div className="item">
+                            <span className='text'>Room</span>
+                            <div className="counter">
+                                <button className="button" disabled={options.roomNumber <= 1}
+                                onClick={()=>handleOptions("roomNumber", "d")}>-</button>
+                                <span className='number'>{options.roomNumber}</span>
+                                <button className="button" onClick={()=>handleOptions("roomNumber", "i")}>+</button>
+                            </div>
+                        </div>
+                    </div>}
             </div>
             <div className="item">
                 <button className="button">Search</button>
             </div>
-        </div>
+        </div> </>}
     </div>
     </div>
   )
