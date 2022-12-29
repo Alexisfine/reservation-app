@@ -9,6 +9,8 @@
         width: 100%;
         max-width: 1024px;
         margin: 20px 0 100px 0;
+        display: flex;
+        flex-direction: column;
 
 
         .list {
@@ -33,7 +35,10 @@
         }
 
         .title {
-            font-size: 50px;
+            font-size: 45px;
+            display: flex;
+            margin-top: 0;
+            
         }
 
         .description {
@@ -49,6 +54,7 @@
             border: none;
             padding: 10px;
             border-radius: 15px;
+            width: 200px;
             cursor: pointer;
         }
 

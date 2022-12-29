@@ -6,6 +6,7 @@ import {DateRange} from 'react-date-range';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import { addDays, format} from 'date-fns/esm';
+import { Navigate, useNavigate } from 'react-router';
 
 interface DateTime {
     startDate?: Date | undefined,
@@ -17,6 +18,7 @@ type HeaderProps = {
     type?: string
 }
 const Header = ({type}:HeaderProps) => {
+    const navigate = useNavigate();
     const [openDate, setOpenDate] = useState(false);
     const [date, setDate] = useState<DateTime>(
         {
@@ -31,6 +33,7 @@ const Header = ({type}:HeaderProps) => {
         children: 0,
         roomNumber: 1
     })
+    const [destination, setDestination] = useState("");
 
     const handleOptions = (name:'adult' | 'children' |'roomNumber', 
                             operation: 'i' | 'd') => {
@@ -38,7 +41,10 @@ const Header = ({type}:HeaderProps) => {
             return {...prev, [name]: operation === 'i' ? options[name] + 1 : options[name] - 1}
         })
     }
-    console.log(type);
+
+    const handleSearch = () => {
+        navigate("/hotels", {state:{destination, date, options}});
+    }
 
 
   return (
@@ -66,13 +72,15 @@ const Header = ({type}:HeaderProps) => {
                 <span>taxis</span>
             </div>
         </div>
-        {type !=='list' && <><h1 className="title">Find your next stay</h1>
+        {type !=='list' && <>
+        <h1 className="title">Find your next stay</h1>
         <p className="description">Search low prices on hotels, homes and much more...</p>
-        <button className="button">Sign in / Register</button>
+        <button className="button">Sign in / Register</button> 
         <div className="search">
             <div className="item">
                 <FontAwesomeIcon icon={faBed} className="icon"></FontAwesomeIcon>
-                <input type="text" placeholder='Where are you going?' className='input'/>
+                <input type="text" placeholder='Where are you going?' className='input'
+                onChange={(e)=>setDestination(e.target.value)}/>
             </div>
             <div className="item">
                 <FontAwesomeIcon icon={faCalendarDays} className="icon"></FontAwesomeIcon>
@@ -85,6 +93,7 @@ const Header = ({type}:HeaderProps) => {
                     onChange={item => setDate(item.selection)}
                     moveRangeOnFirstSelection={false}
                     ranges={[date]}
+                    minDate={new Date()}
                     className="date"
                     /> }
             </div>
@@ -124,7 +133,7 @@ const Header = ({type}:HeaderProps) => {
                     </div>}
             </div>
             <div className="item">
-                <button className="button">Search</button>
+                <button className="button" onClick={handleSearch}>Search</button>
             </div>
         </div> </>}
     </div>
