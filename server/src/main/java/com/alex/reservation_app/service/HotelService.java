@@ -1,21 +1,20 @@
 package com.alex.reservation_app.service;
 
 import com.alex.reservation_app.dao.HotelDao;
+import com.alex.reservation_app.dto.HotelDto;
 import com.alex.reservation_app.model.Hotel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
+import java.rmi.NoSuchObjectException;
+import java.util.UUID;
+
 @Service
-public class HotelService {
-    private HotelDao hotelDao;
+public interface HotelService {
 
-    @Autowired
-    public HotelService(HotelDao hotelDao) {
-        this.hotelDao = hotelDao;
-    }
 
-    public Hotel addHotel(Hotel newHotel) {
-        return hotelDao.save(newHotel);
-    }
+    public Hotel addHotel(Hotel newHotel);
+
+    public Hotel updateHotel(HotelDto hotelDto, UUID id);
 }
