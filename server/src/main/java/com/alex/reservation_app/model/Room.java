@@ -20,7 +20,7 @@ public class Room {
             name="hotel_id",
             nullable = false,
             referencedColumnName = "id",
-            foreignKey = @ForeignKey(name="photo_hotel_id_fk")
+            foreignKey = @ForeignKey(name="room_hotel_id_fk")
     )
     private Hotel hotel;
 

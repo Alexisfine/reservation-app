@@ -73,17 +73,30 @@ public class Hotel {
     )
     private List<Room> rooms = new ArrayList<>();
 
-    @Column(name = "description")
+    @Column(
+            name = "description",
+            nullable = false
+    )
     private String description;
 
-
-    @Column(name = "rating")
+    @Column(
+            name = "title",
+            nullable = false
+    )
+    private String title;
+    @Column(
+            name = "rating")
     private double rating;
 
-    @Column(name = "cheapest_price")
+    @Column(
+            name = "cheapest_price",
+            nullable = false)
     private double cheapestPrice;
 
-    @Column(name = "featured")
+    @Column(
+            name = "featured",
+            nullable = false
+    )
     private boolean featured = false;
 
     @Column(
@@ -95,7 +108,6 @@ public class Hotel {
 
     @Column(
             name = "updated_at",
-            nullable = false,
             columnDefinition = "TIMESTAMP WITHOUT TIME ZONE"
     )
     private LocalDateTime updated_at;
@@ -110,15 +122,21 @@ public class Hotel {
                  String city,
                  String address,
                  String distance,
+                 String title,
                  String description,
-                 double rating) {
+                 Double cheapestPrice) {
+        this.id = UUID.randomUUID();
+        this.createdAt = LocalDateTime.now();
+        this.updated_at = LocalDateTime.now();
+
         this.name = name;
         this.hotelType = hotelType;
         this.city = city;
         this.address = address;
         this.distance = distance;
+        this.title = title;
         this.description = description;
-        this.rating = rating;
+        this.cheapestPrice = cheapestPrice;
     }
 
     public UUID getId() {
@@ -211,6 +229,8 @@ public class Hotel {
 
     public void setRating(Double rating) {
         this.rating = rating;
+        this.updated_at = LocalDateTime.now();
+
     }
 
     public String getDescription() {
@@ -219,6 +239,8 @@ public class Hotel {
 
     public void setDescription(String description) {
         this.description = description;
+        this.updated_at = LocalDateTime.now();
+
     }
 
     public List<Room> getRooms() {
@@ -243,5 +265,54 @@ public class Hotel {
 
     public void setCheapestPrice(double cheapestPrice) {
         this.cheapestPrice = cheapestPrice;
+        this.updated_at = LocalDateTime.now();
+
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+        this.updated_at = LocalDateTime.now();
+
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+        this.updated_at = LocalDateTime.now();
+
+    }
+
+    public boolean isFeatured() {
+        return featured;
+    }
+
+    public void setFeatured(boolean featured) {
+        this.featured = featured;
+        this.updated_at = LocalDateTime.now();
+
+    }
+
+    @Override
+    public String toString() {
+        return "Hotel{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", hotelType='" + hotelType + '\'' +
+                ", city='" + city + '\'' +
+                ", address='" + address + '\'' +
+                ", distance='" + distance + '\'' +
+                ", photos=" + photos +
+                ", rooms=" + rooms +
+                ", description='" + description + '\'' +
+                ", title='" + title + '\'' +
+                ", rating=" + rating +
+                ", cheapestPrice=" + cheapestPrice +
+                ", featured=" + featured +
+                ", createdAt=" + createdAt +
+                ", updated_at=" + updated_at +
+                '}';
     }
 }
