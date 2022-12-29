@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -38,5 +39,20 @@ public class HotelController {
     @PutMapping("/{id}")
     public ResponseEntity<Hotel> updateHotel(@RequestBody HotelDto hotelDto, @PathVariable("id") UUID hotelId) {
         return ResponseEntity.ok(hotelService.updateHotel(hotelDto, hotelId));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Hotel> getHotel(@PathVariable("id") UUID hotelId) {
+        return ResponseEntity.ok(hotelService.getHotelById(hotelId));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Hotel>> getAllHotels() {
+        return ResponseEntity.ok(hotelService.getAllHotels());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteHotel(@PathVariable("id") UUID hotelId) {
+        return ResponseEntity.ok(hotelService.deleteHotel(hotelId));
     }
 }

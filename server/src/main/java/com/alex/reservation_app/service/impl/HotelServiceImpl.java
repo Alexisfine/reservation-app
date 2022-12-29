@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -35,10 +36,38 @@ public class HotelServiceImpl implements HotelService {
         Hotel hotel = hotelDao
                 .findById(id)
                 .orElseThrow(
-                () -> new HotelNotFoundException("Cannot find hotel with id " + id));
+                    () -> new HotelNotFoundException("Cannot find hotel with id " + id)
+                );
 
         BeanUtils.copyProperties(hotelDto, hotel, UpdateColumnUtil.getNullPropertyNames(hotelDto));
 
         return hotelDao.save(hotel);
+    }
+
+    @Override
+    public Hotel getHotelById(UUID id) {
+        Hotel hotel = hotelDao
+                .findById(id)
+                .orElseThrow(
+                        () -> new HotelNotFoundException("Cannot find hotel with id " + id)
+                );
+        return hotel;
+    }
+
+    @Override
+    public List<Hotel> getAllHotels() {
+        List<Hotel> hotels = hotelDao.findAll();
+        return hotels;
+    }
+
+    @Override
+    public String deleteHotel(UUID id) {
+        Hotel hotel = hotelDao
+                .findById(id)
+                .orElseThrow(
+                        () -> new HotelNotFoundException("Cannot find hotel with id " + id)
+                );
+        hotelDao.deleteById(id);
+        return "Hotel " + id + " has been deleted";
     }
 }

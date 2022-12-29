@@ -8,13 +8,19 @@ import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.rmi.NoSuchObjectException;
+import java.util.List;
 import java.util.UUID;
 
 @Service
 public interface HotelService {
 
+    Hotel addHotel(Hotel newHotel);
 
-    public Hotel addHotel(Hotel newHotel);
+    Hotel updateHotel(HotelDto hotelDto, UUID id);
 
-    public Hotel updateHotel(HotelDto hotelDto, UUID id);
+    Hotel getHotelById(UUID id);
+
+    List<Hotel> getAllHotels();
+
+    String deleteHotel(UUID id);
 }
