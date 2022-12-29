@@ -3,17 +3,26 @@ import './List.scss'
 import Header from '../../components/header/Header'
 import Navbar from '../../components/navbar/Navbar'
 import { useLocation } from 'react-router'
-import {format} from 'date-fns/esm';
 import { DateRange } from 'react-date-range'
 import SearchItem from '../../components/searchItem/SearchItem'
+import { addDays, format} from 'date-fns/esm';
+
 
 const List = () => {
 
   const location = useLocation();
-  const [destination, setDestination] = useState(location.state.destination);
-  const [date, setDate] = useState(location.state.date);
+  const [destination, setDestination] = useState(location?.state?.destination ? location.state.destination : "Hong Kong");
+  const [date, setDate] = useState(location?.state?.date ? location.state.date : {
+    startDate: new Date(),
+    endDate: addDays(new Date(), 3),
+    key: 'selection'
+    });
   const [openDate, setOpenDate] = useState(false);
-  const [options, setOptions] = useState(location.state.options);
+  const [options, setOptions] = useState(location?.state?.options ? location.state.options : {
+    adult: 1,
+    children: 0,
+    roomNumber: 1
+});
 
   console.log(location.state)
 
