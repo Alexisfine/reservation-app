@@ -31,4 +31,14 @@ public class GlobalExceptionHandler {
         );
         return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorObject> handleHotelNotFoundException(UserNotFoundException ex) {
+        ErrorObject errorObject = new ErrorObject(
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                ZonedDateTime.now()
+        );
+        return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.BAD_REQUEST);
+    }
 }
