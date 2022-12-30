@@ -41,4 +41,16 @@ public class GlobalExceptionHandler {
         );
         return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(IllegalOperationException.class)
+    public ResponseEntity<ErrorObject> handleHotelNotFoundException(IllegalOperationException ex) {
+        ErrorObject errorObject = new ErrorObject(
+                HttpStatus.FORBIDDEN.value(),
+                ex.getMessage(),
+                ZonedDateTime.now()
+        );
+        return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.FORBIDDEN);
+    }
+
+
 }

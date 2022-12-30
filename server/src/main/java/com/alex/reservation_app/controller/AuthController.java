@@ -8,7 +8,11 @@ import com.alex.reservation_app.dto.RegisterUserDto;
 import com.alex.reservation_app.model.User;
 import com.alex.reservation_app.security.JwtGenerator;
 import com.alex.reservation_app.service.UserService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,13 +42,17 @@ public class AuthController {
         this.jwtGenerator = jwtGenerator;
     }
 
+
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody RegisterUserDto userDto) {
         return ResponseEntity.ok(userService.registerUser(userDto));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDto> login(@RequestBody LoginDto userDto) {
+    public ResponseEntity<AuthResponseDto> login(@RequestBody LoginDto userDto, HttpServletResponse response) {
+
         return ResponseEntity.ok(userService.loginUser(userDto));
+
+
     }
 }

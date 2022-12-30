@@ -1,20 +1,32 @@
 package com.alex.reservation_app.dto;
 
-import org.springframework.context.annotation.Bean;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
-public class RegisterUserDto {
+public class UserDto {
+    private UUID id;
     private String username;
     private String password;
     private String email;
+    private LocalDateTime created_at;
+    private LocalDateTime updated_at;
 
-    public RegisterUserDto() {
-
+    public UserDto() {
     }
 
-    public RegisterUserDto(String username, String password, String email) {
+    public UserDto(UUID id, String username, String password, String email) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -43,10 +55,13 @@ public class RegisterUserDto {
 
     @Override
     public String toString() {
-        return "RegisterUserDto{" +
-                "username='" + username + '\'' +
+        return "UserDto{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
+                ", created_at=" + created_at +
+                ", updated_at=" + updated_at +
                 '}';
     }
 }

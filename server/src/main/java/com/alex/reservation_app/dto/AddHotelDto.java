@@ -10,6 +10,9 @@ public class AddHotelDto {
     private String description;
     private String cheapestPrice;
 
+    public AddHotelDto() {
+    }
+
     public AddHotelDto(String name,
                        String hotelType,
                        String city,

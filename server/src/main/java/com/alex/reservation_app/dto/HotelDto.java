@@ -20,6 +20,8 @@ public class HotelDto {
 
     private LocalDateTime updatedAt;
 
+    public HotelDto(){}
+
 
     public HotelDto(UUID id, String name,
                     String hotelType,

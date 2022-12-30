@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +31,9 @@ public class CustomerUserDetailsService implements UserDetailsService {
         com.alex.reservation_app.model.User user = userDao
                 .findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException("Username not found"));
+
+        mapRolesToAuthorities(user.getRoles()).stream().toList().forEach(e -> System.out.println(e.getClass()));
+        System.out.println(mapRolesToAuthorities(user.getRoles()));
         return new User(
                 user.getUsername(),
                 user.getPassword(),

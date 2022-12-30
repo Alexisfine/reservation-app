@@ -1,10 +1,12 @@
 package com.alex.reservation_app.model;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
 
 @Entity(name = "Roles")
 @Table(name = "roles")
-public class Roles {
+public class Roles  {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -32,5 +34,13 @@ public class Roles {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Roles{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }
