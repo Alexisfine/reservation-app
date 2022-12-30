@@ -2,6 +2,8 @@ package com.alex.reservation_app.controller;
 
 import com.alex.reservation_app.dao.RoleDao;
 import com.alex.reservation_app.dao.UserDao;
+import com.alex.reservation_app.dto.AuthResponseDto;
+import com.alex.reservation_app.dto.LoginDto;
 import com.alex.reservation_app.dto.RegisterUserDto;
 import com.alex.reservation_app.model.User;
 import com.alex.reservation_app.security.JwtGenerator;
@@ -37,7 +39,12 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterUserDto userDto) {
+    public ResponseEntity<User> register(@RequestBody RegisterUserDto userDto) {
         return ResponseEntity.ok(userService.registerUser(userDto));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponseDto> login(@RequestBody LoginDto userDto) {
+        return ResponseEntity.ok(userService.loginUser(userDto));
     }
 }
