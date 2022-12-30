@@ -1,5 +1,6 @@
 package com.alex.reservation_app.exception;
 
+import com.alex.reservation_app.utils.R;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,46 +11,58 @@ import java.time.ZonedDateTime;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ErrorObject> handleIllegalArgumentException(IllegalArgumentException ex) {
-        ErrorObject errorObject = new ErrorObject(
-                HttpStatus.BAD_REQUEST.value(),
-                ex.getMessage(),
-                ZonedDateTime.now()
-        );
-
-        return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.BAD_REQUEST);
-
-    }
 
     @ExceptionHandler(HotelNotFoundException.class)
-    public ResponseEntity<ErrorObject> handleHotelNotFoundException(HotelNotFoundException ex) {
+    public ResponseEntity<R> handleHotelNotFoundException(HotelNotFoundException ex) {
         ErrorObject errorObject = new ErrorObject(
                 HttpStatus.BAD_REQUEST.value(),
                 ex.getMessage(),
                 ZonedDateTime.now()
         );
-        return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.BAD_REQUEST);
+        ex.printStackTrace();
+        R response = new R(errorObject);
+
+        return new ResponseEntity<R>(response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ErrorObject> handleHotelNotFoundException(UserNotFoundException ex) {
+    public ResponseEntity<R> handleUserNotFoundException(UserNotFoundException ex) {
         ErrorObject errorObject = new ErrorObject(
                 HttpStatus.BAD_REQUEST.value(),
                 ex.getMessage(),
                 ZonedDateTime.now()
         );
-        return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.BAD_REQUEST);
+        ex.printStackTrace();
+
+        R response = new R(errorObject);
+
+        return new ResponseEntity<R>(response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(IllegalOperationException.class)
-    public ResponseEntity<ErrorObject> handleHotelNotFoundException(IllegalOperationException ex) {
+    public ResponseEntity<R> handleIllegalOperationException(IllegalOperationException ex) {
         ErrorObject errorObject = new ErrorObject(
                 HttpStatus.FORBIDDEN.value(),
                 ex.getMessage(),
                 ZonedDateTime.now()
         );
-        return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.FORBIDDEN);
+        ex.printStackTrace();
+        R response = new R(errorObject);
+
+        return new ResponseEntity<R>(response, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(RoomNotFoundException.class)
+    public ResponseEntity<R> handleRoomNotFoundException(RoomNotFoundException ex) {
+        ErrorObject errorObject = new ErrorObject(
+                HttpStatus.NOT_FOUND.value(),
+                ex.getMessage(),
+                ZonedDateTime.now()
+        );
+        ex.printStackTrace();
+        R response = new R(errorObject);
+
+        return new ResponseEntity<R>(response, HttpStatus.NOT_FOUND);
     }
 
 

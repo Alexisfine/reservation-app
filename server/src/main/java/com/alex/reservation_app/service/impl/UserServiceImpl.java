@@ -146,6 +146,30 @@ public class UserServiceImpl implements UserService {
         return updatedUserHelper(userDto, user);
     }
 
+    @Override
+    public String deleteUserById(UUID id) {
+        User user = findUser(id);
+
+        boolean isAdmin = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getAuthorities()
+                .stream().anyMatch(e -> e.getAuthority().equals("ADMIN"));
+
+        if (isAdmin) {
+            userDao.deleteById(id);
+        } else {
+            String tokenUsername = SecurityContextHolder
+                    .getContext()
+                    .getAuthentication()
+                    .getName();
+            if (!tokenUsername.equals(user.getUsername()))
+                throw new IllegalOperationException("You can only delete your account");
+            userDao.deleteById(id);
+        }
+        return "User is deleted";
+    }
+
     private Object updatedUserHelper(UserDto userDto, User user) {
         if (userDto.getPassword() != null) {
             String encodePassword = passwordEncoder.encode(userDto.getPassword());

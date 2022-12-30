@@ -4,6 +4,7 @@ import com.alex.reservation_app.dto.RegisterUserDto;
 import com.alex.reservation_app.dto.UserDto;
 import com.alex.reservation_app.model.User;
 import com.alex.reservation_app.service.UserService;
+import com.alex.reservation_app.utils.R;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,38 +24,38 @@ public class UserController {
     }
 
     @PostMapping("/auth")
-    public ResponseEntity<User> addAdminUser(@RequestBody RegisterUserDto userDto) {
-        return ResponseEntity.ok(userService.addAdminUser(userDto));
+    public ResponseEntity<R> addAdminUser(@RequestBody RegisterUserDto userDto) {
+        return ResponseEntity.ok(new R(userService.addAdminUser(userDto)));
     }
 
     @GetMapping("/auth/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable("id") UUID id) {
-        return ResponseEntity.ok(userService.getUser(id));
+    public ResponseEntity<R> getUserById(@PathVariable("id") UUID id) {
+        return ResponseEntity.ok(new R(userService.getUser(id)));
     }
 
     @GetMapping("/auth")
-    public ResponseEntity<List<User>> getAllUsers() {
-        return ResponseEntity.ok(userService.getAllUsers());
+    public ResponseEntity<R> getAllUsers() {
+        return ResponseEntity.ok(new R(userService.getAllUsers()));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateUserById(
+    public ResponseEntity<R> updateUserById(
             @PathVariable("id") UUID id,
             @RequestBody UserDto userDto,
             Principal principal) {
-        return ResponseEntity.ok(userService.updateUserById(id, userDto, principal));
+        return ResponseEntity.ok(new R(userService.updateUserById(id, userDto, principal)));
     }
 
     @PutMapping("/auth/{id}")
-    public ResponseEntity<Object> adminUpdateUserById(
+    public ResponseEntity<R> adminUpdateUserById(
             @PathVariable("id") UUID id,
             @RequestBody UserDto userDto) {
-        return ResponseEntity.ok(userService.adminUpdateUserById(id, userDto));
+        return ResponseEntity.ok(new R(userService.adminUpdateUserById(id, userDto)));
     }
 
 
-
-
-
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<R> deleteUserById(@PathVariable("id") UUID id) {
+        return ResponseEntity.ok(new R(userService.deleteUserById(id)));
+    }
 }

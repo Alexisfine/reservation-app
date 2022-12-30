@@ -4,6 +4,7 @@ import com.alex.reservation_app.dto.AddHotelDto;
 import com.alex.reservation_app.dto.HotelDto;
 import com.alex.reservation_app.model.Hotel;
 import com.alex.reservation_app.service.HotelService;
+import com.alex.reservation_app.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,7 +25,7 @@ public class HotelController {
 
 
     @PostMapping("/auth")
-    public ResponseEntity<Hotel> addHotel(@RequestBody AddHotelDto addHotelDto) {
+    public ResponseEntity<R> addHotel(@RequestBody AddHotelDto addHotelDto) {
         double cheapestPrice = Double.parseDouble(addHotelDto.getCheapestPrice());
         Hotel newHotel = new Hotel(
                 addHotelDto.getName(),
@@ -35,26 +36,26 @@ public class HotelController {
                 addHotelDto.getTitle(),
                 addHotelDto.getDescription(),
                 cheapestPrice);
-        return ResponseEntity.ok(hotelService.addHotel(newHotel));
+        return ResponseEntity.ok(new R(hotelService.addHotel(newHotel)));
     }
 
 
     @PutMapping("/auth/{id}")
-    public ResponseEntity<Hotel> updateHotel(@RequestBody HotelDto hotelDto, @PathVariable("id") UUID hotelId) {
+    public ResponseEntity<R> updateHotel(@RequestBody HotelDto hotelDto, @PathVariable("id") UUID hotelId) {
         System.out.println(hotelDto);
-        return ResponseEntity.ok(hotelService.updateHotel(hotelDto, hotelId));
+        return ResponseEntity.ok(new R(hotelService.updateHotel(hotelDto, hotelId)));
     }
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<Hotel> getHotel(@PathVariable("id") UUID hotelId) {
-        return ResponseEntity.ok(hotelService.getHotelById(hotelId));
+    public ResponseEntity<R> getHotel(@PathVariable("id") UUID hotelId) {
+        return ResponseEntity.ok(new R(hotelService.getHotelById(hotelId)));
     }
 
 
     @GetMapping
-    public ResponseEntity<List<Hotel>> getAllHotels() {
-        return ResponseEntity.ok(hotelService.getAllHotels());
+    public ResponseEntity<R> getAllHotels() {
+        return ResponseEntity.ok(new R(hotelService.getAllHotels()));
     }
 
 

@@ -69,8 +69,9 @@ public class Hotel {
             mappedBy = "hotel",
             orphanRemoval = true,
             cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER
+            fetch = FetchType.LAZY
     )
+
     private List<Room> rooms = new ArrayList<>();
 
     @Column(

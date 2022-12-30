@@ -29,4 +29,5 @@ public interface UserService {
     Object adminUpdateUserById(UUID id, UserDto userDto);
 
 
+    String deleteUserById(UUID id);
 }
