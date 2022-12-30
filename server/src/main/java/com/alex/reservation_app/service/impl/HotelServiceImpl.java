@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class HotelServiceImpl implements HotelService {
@@ -69,5 +71,27 @@ public class HotelServiceImpl implements HotelService {
                 );
         hotelDao.deleteById(id);
         return "Hotel " + id + " has been deleted";
+    }
+
+    @Override
+    public List<Integer> countByCity(String[] cityList) {
+        return Arrays
+                .stream(cityList)
+                .map(city -> hotelDao.countByCitiesKeyWord(city))
+                .toList();
+    }
+
+    @Override
+    public List<Integer> countByType(String[] typeList) {
+        return Arrays
+                .stream(typeList)
+                .map(type -> hotelDao.countByHotelTypeLike(type))
+                .collect(Collectors.toList());
+
+    }
+
+    @Override
+    public List<Hotel> getByFeatured(boolean parseBoolean, Integer limit) {
+        return hotelDao.findByFeatured(parseBoolean).subList(0, limit);
     }
 }

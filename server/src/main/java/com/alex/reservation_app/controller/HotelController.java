@@ -63,4 +63,29 @@ public class HotelController {
     public ResponseEntity<String> deleteHotel(@PathVariable("id") UUID hotelId) {
         return ResponseEntity.ok(hotelService.deleteHotel(hotelId));
     }
+
+    @GetMapping("/countByCity")
+    public ResponseEntity<R> countByCity(@RequestParam(name="cities") String cities) {
+        String[] cityList = cities.split(",");
+        List<Integer> integerList = hotelService.countByCity(cityList);
+        return ResponseEntity.ok(new R(integerList));
+    }
+
+    @GetMapping("/countByType")
+    public ResponseEntity<R> countByType(@RequestParam(name="types") String types) {
+        String[] typeList = types.split(",");
+        List<Integer> integerList = hotelService.countByType(typeList);
+        return ResponseEntity.ok(new R(integerList));
+    }
+
+    @GetMapping("/find")
+    public ResponseEntity<R> getByFeatured(
+            @RequestParam(name="featured") String featured,
+            @RequestParam(name="limit") String limit) {
+        List<Hotel> hotelList = hotelService
+                .getByFeatured(
+                        Boolean.parseBoolean(featured),
+                        Integer.parseInt(limit));
+        return ResponseEntity.ok(new R(hotelList));
+    }
 }
