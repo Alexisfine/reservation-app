@@ -36,7 +36,7 @@ const SearchItem = ({item}:SearchItemProps) => {
           <button>{item.rating}</button>
         </div>}
         <div className="text">
-          <span className="price">${item.cheapestPrice}</span>
+          <span className="price">${item.cheapestPrice} per night</span>
           <span className="tax">Includes taxes and fees</span>
           <Link to={`/hotels/${item.id}`}>
             <button className="checkButton">See availability</button>

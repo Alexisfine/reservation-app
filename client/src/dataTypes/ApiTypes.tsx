@@ -15,7 +15,26 @@ export interface IHotel {
   rooms?: any,
 }
 
-export interface ICount {
-  
+export interface IUser {
+
+    id: string,
+    username: string,
+    email:string,
+    
+}
+
+export interface IRoom {
+  id: string,
+  title: string,
+  roomNumber: string,
+  price: number,
+  description: string,
+  maxPeople: number,
+  roomType: string,
+  unavailableDates: Date[]
+}
+
+export interface IDate {
+  startDate: Date, key: string, endDate: Date
 }
 

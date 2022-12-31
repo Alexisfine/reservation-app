@@ -1,17 +1,29 @@
 import { faCircleArrowLeft, faCircleArrowRight, faCircleXmark, faLocationDot } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { parseWithOptions } from 'date-fns/fp'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Footer from '../../components/footer/Footer'
 import Header from '../../components/header/Header'
 import MailList from '../../components/mailList/MailList'
 import Navbar from '../../components/navbar/Navbar'
 import './Hotel.scss'
-
+import useFetch from '../../hooks/useFetch'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { IDate, IHotel } from '../../dataTypes/ApiTypes'
+import { SearchContext } from '../../context/searchContext'
+import { AuthContext } from '../../context/authContext'
+import Reserve from '../../components/reserve/Reserve'
 const Hotel = () => {
 
   const [slideNumber, setSlideNumber] = useState(0);
   const [open, setOpen] = useState(false);
+  const [openBook, setOpenBook] = useState(false);
+  const location = useLocation().pathname;
+  const id = location.split('/')[2];
+ 
+  const {loading, data, error} = useFetch(`/hotels/v1/${id}`);
+  const info = data as unknown as IHotel;
+
 
   const photos = [
     {
@@ -33,6 +45,22 @@ const Hotel = () => {
       src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261707389.jpg?k=52156673f9eb6d5d99d3eed9386491a0465ce6f3b995f005ac71abc192dd5827&o=&hp=1",
     },
   ];
+  const MILL_SEC_PER_DAY = 1000 * 60 * 60 * 24;
+  const {state} = useContext(SearchContext);
+  const dateInfo = state.date as unknown as IDate;
+  const options = state.options;
+
+  const dateDifference = (start:Date, end:Date) => {
+    if (!start || ! end) return 3;
+    const timeDiff = Math.abs(end.getTime() - start.getTime());
+    const diffDays = Math.ceil(timeDiff / MILL_SEC_PER_DAY);
+    return diffDays;
+  }
+
+  console.log(state)
+
+  const days = dateDifference(dateInfo?.startDate, dateInfo?.endDate)
+
 
   const handleOpen = (i:number) => {
     setSlideNumber(i);
@@ -52,11 +80,26 @@ const Hotel = () => {
     } 
   }
 
+  const navigate = useNavigate();
+
+  const {state:authState} = useContext(AuthContext);
+  const user = authState.user;
+
+  const handleClick = () => {
+    if (user) {
+      setOpenBook(true)
+
+    } else {
+      navigate("/login")
+    }
+  }
+
+
   return (
     <div>
       <Navbar/>
       <Header type="list"/>
-      <div className="hotelContainer">
+      {loading ? "loading" : (<div className="hotelContainer">
         {open && <div className="silder">
           <FontAwesomeIcon icon={faCircleXmark} className="close" onClick={()=>setOpen(false)}/>
           <FontAwesomeIcon icon={faCircleArrowLeft} className="arrow" onClick={()=>handleMove("l")}/>
@@ -67,57 +110,49 @@ const Hotel = () => {
 
           </div>}
         <div className="hotelWrapper">
-          <button className="book">Reserve or Book now</button>
-          <h1 className="title">Grand Hotel</h1>
+          <button className="book" onClick={handleClick}>{info.rooms?.length !== 0 ? "Reserve or Book Now!" :"No rooms are available"}</button>
+          <h1 className="title">{info.title}</h1>
           <div className="address">
             <FontAwesomeIcon icon={faLocationDot}/>
-            <span>Elton St 125 New York</span></div>
+            <span>{info.address}</span></div>
             <span className="distance">
-              Excellent location - 500m from center
+              Excellent location - {info.distance}m from center
             </span>
             <span className="priceHighlight">
-              Book a stay over $114 at this property and get a free airport taxi
+              Book a stay over ${info.cheapestPrice} at this property and get a free airport taxi
             </span>
             <div className="images">
                 {photos.map((photo,i) => (
-                  <div className="imageWrapper">
+                  <div className="imageWrapper" key={i}>
                     <img src={photo.src} alt="" className="image" onClick={() => handleOpen(i)}/>
                   </div>
                 ))}
             </div>
             <div className="details">
               <div className="texts">
-                <h1 className="textTitle">Stay in the heart of City</h1>
+                <h1 className="textTitle">{info.title}</h1>
                 <p className="desc">
-                  Located a 5-minute walk from St. Florian's Gate in Krakow, Tower
-                  Street Apartments has accommodations with air conditioning and
-                  free WiFi. The units come with hardwood floors and feature a
-                  fully equipped kitchenette with a microwave, a flat-screen TV,
-                  and a private bathroom with shower and a hairdryer. A fridge is
-                  also offered, as well as an electric tea pot and a coffee
-                  machine. Popular points of interest near the apartment include
-                  Cloth Hall, Main Market Square and Town Hall Tower. The nearest
-                  airport is John Paul II International Kraków–Balice, 16.1 km
-                  from Tower Street Apartments, and the property offers a paid
-                  airport shuttle service.
+                  {info.description}
                 </p>
               </div>
               <div className="price">
-                <h1>Perfect for a 9-night stay!</h1>
+                <h1>Perfect for a {days ? days : "9"}-night stay!</h1>
                 <span>
                   Located in the real heart of Krakow, this property has an
                   excellent location score of 9.8!
                 </span>
                 <h2>
-                  <b>$945</b> (9 nights)
+                  <b>${days * info.cheapestPrice * options.roomNumber!} </b> ({days ? days : "9"} nights)
                 </h2>
-                <button>Reserve or Book Now!</button>
+                <button onClick={handleClick} disabled={info.rooms?.length === 0}>
+                  {info.rooms?.length !== 0 ? "Reserve or Book Now!" :"No rooms are available"}</button>
               </div>
             </div>
           </div>
           <MailList/>
           <Footer/>
-        </div>
+        </div>)}
+        {openBook && <Reserve setOpen={setOpenBook} hotelId={id} data={info}></Reserve>}
     </div>
   )
 }

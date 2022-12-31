@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import "./Header.scss"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faBed, faPlane, faCar, faTaxi, faCalendarDays, faPerson} from '@fortawesome/free-solid-svg-icons'
@@ -7,6 +7,8 @@ import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import { addDays, format} from 'date-fns/esm';
 import { Navigate, useNavigate } from 'react-router';
+import { SearchContext } from '../../context/searchContext';
+import { AuthContext } from '../../context/authContext';
 
 interface DateTime {
     startDate?: Date | undefined,
@@ -18,6 +20,9 @@ type HeaderProps = {
     type?: string
 }
 const Header = ({type}:HeaderProps) => {
+    const {state} = useContext(AuthContext);
+    const user = state.user;
+
     const navigate = useNavigate();
     const [openDate, setOpenDate] = useState(false);
     const [date, setDate] = useState<DateTime>(
@@ -42,9 +47,20 @@ const Header = ({type}:HeaderProps) => {
         })
     }
 
+    const {dispatch} = useContext(SearchContext);
+
+
     const handleSearch = () => {
+        dispatch(
+            {
+                type: "NEW_SEARCH",
+                payload: {destination, date, options}
+            }
+        )
         navigate("/hotels", {state:{destination, date, options}});
     }
+
+
 
 
   return (
@@ -75,7 +91,7 @@ const Header = ({type}:HeaderProps) => {
         {type !=='list' && <>
         <h1 className="title">Find your next stay</h1>
         <p className="description">Search low prices on hotels, homes and much more...</p>
-        <button className="button">Sign in / Register</button> 
+        {!user && <button className="button">Sign in / Register</button> }
         <div className="search">
             <div className="item">
                 <FontAwesomeIcon icon={faBed} className="icon"></FontAwesomeIcon>

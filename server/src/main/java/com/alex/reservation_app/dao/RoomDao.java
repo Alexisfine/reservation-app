@@ -10,4 +10,5 @@ public interface RoomDao extends JpaRepository<Room, UUID> {
 
     boolean existsByRoomNumber(String number);
 
+
 }
