@@ -1,6 +1,7 @@
 package com.alex.reservation_app.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 public class HotelDto {
@@ -20,6 +21,8 @@ public class HotelDto {
 
     private LocalDateTime updatedAt;
 
+    private List<RoomDto> rooms;
+
     public HotelDto(){}
 
 
@@ -34,7 +37,8 @@ public class HotelDto {
                     Double cheapestPrice,
                     Boolean featured,
                     LocalDateTime createdAt,
-                    LocalDateTime updatedAt) {
+                    LocalDateTime updatedAt,
+                    List<RoomDto> rooms) {
         this.id = id;
         this.name = name;
         this.hotelType = hotelType;
@@ -48,6 +52,7 @@ public class HotelDto {
         this.featured = featured;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.rooms = rooms;
     }
 
     public UUID getId() {
@@ -152,5 +157,33 @@ public class HotelDto {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public List<RoomDto> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(List<RoomDto> rooms) {
+        this.rooms = rooms;
+    }
+
+    @Override
+    public String toString() {
+        return "HotelDto{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", hotelType='" + hotelType + '\'' +
+                ", city='" + city + '\'' +
+                ", address='" + address + '\'' +
+                ", distance='" + distance + '\'' +
+                ", description='" + description + '\'' +
+                ", title='" + title + '\'' +
+                ", rating=" + rating +
+                ", cheapestPrice=" + cheapestPrice +
+                ", featured=" + featured +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", rooms=" + rooms +
+                '}';
     }
 }

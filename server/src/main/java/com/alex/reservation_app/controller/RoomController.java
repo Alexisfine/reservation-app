@@ -1,6 +1,7 @@
 package com.alex.reservation_app.controller;
 
 import com.alex.reservation_app.dto.AddRoomDto;
+import com.alex.reservation_app.dto.RoomDto;
 import com.alex.reservation_app.model.Room;
 import com.alex.reservation_app.service.RoomService;
 import com.alex.reservation_app.utils.R;
@@ -24,13 +25,13 @@ public class RoomController {
     @PostMapping("/auth/{id}")
     // NOTE: this id param is hotel id
     public ResponseEntity<R> addNewRoom(@RequestBody AddRoomDto addRoomDto, @PathVariable("id") UUID uuid) {
-        Room room = roomService.createRoom(addRoomDto, uuid);
+        RoomDto room = roomService.createRoom(addRoomDto, uuid);
         return ResponseEntity.ok(new R(room));
     }
 
     @PutMapping("/auth/{id}")
     public ResponseEntity<R> updateRoomByRoomId(@RequestBody AddRoomDto addRoomDto, @PathVariable("id") UUID uuid) {
-        Room room = roomService.updateRoomById(addRoomDto, uuid);
+        RoomDto room = roomService.updateRoomById(addRoomDto, uuid);
         return ResponseEntity.ok(new R(room));
     }
 
@@ -42,13 +43,13 @@ public class RoomController {
 
     @GetMapping
     public ResponseEntity<R> getAllRooms() {
-        List<Room> rooms = roomService.getAllRooms();
+        List<RoomDto> rooms = roomService.getAllRooms();
         return ResponseEntity.ok(new R(rooms));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<R> getRoom(@PathVariable("id") UUID id) {
-        Room room = roomService.getRoomById(id);
+        RoomDto room = roomService.getRoomById(id);
         return ResponseEntity.ok(new R(room));
     }
 }

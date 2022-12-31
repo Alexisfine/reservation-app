@@ -7,11 +7,14 @@ import { DateRange } from 'react-date-range'
 import SearchItem from '../../components/searchItem/SearchItem'
 import { addDays, format} from 'date-fns/esm';
 
+import useFetch from '../../hooks/useFetch'
+import { IHotel } from '../../dataTypes/ApiTypes'
+
 
 const List = () => {
 
   const location = useLocation();
-  const [destination, setDestination] = useState(location?.state?.destination ? location.state.destination : "Hong Kong");
+  const [destination, setDestination] = useState(location?.state?.destination ? location.state.destination : "Berlin");
   const [date, setDate] = useState(location?.state?.date ? location.state.date : {
     startDate: new Date(),
     endDate: addDays(new Date(), 3),
@@ -23,8 +26,16 @@ const List = () => {
     children: 0,
     roomNumber: 1
 });
+  const [min, setMin] = useState<String|undefined>();
+  const [max, setMax] = useState<String|undefined>();
 
-  console.log(location.state)
+  const {loading, data, error, reFetch} = useFetch(`/hotels/v1/find/city?city=${destination}&min=${min || 0}&max=${max || 999}`);
+  const info = data! as IHotel[];
+
+  const handleSearch = () => {
+    reFetch();
+  }
+
 
   return (
     <div>
@@ -49,11 +60,13 @@ const List = () => {
               <div className="options">
               <div className="option">
                 <span className="text">Minimum price <small>per night</small></span>
-                <input type="number" className="input" />
+                <input type="number" className="input" 
+                  onChange={e=>setMin(e.target.value)}/>
               </div>
               <div className="option">
-                <span className="text">Maximum price <small>per night</small></span>
-                <input type="number" className="input" />
+                <span className="text">Max imum price <small>per night</small></span>
+                <input type="number" className="input" 
+                  onChange={e=>setMax(e.target.value)}/>
               </div>
               <div className="option">
                 <span className="text">Adult</span>
@@ -70,18 +83,15 @@ const List = () => {
               </div>
               
             </div>
-            <button className="searchBtn">Search</button>
+            <button className="searchBtn" onClick={handleSearch}>Search</button>
           </div>
           <div className="result">
-            <SearchItem/>
-            <SearchItem/>
-            <SearchItem/>
-            <SearchItem/>
-            <SearchItem/>
-            <SearchItem/>
-            <SearchItem/>
-            <SearchItem/>
-
+            {loading ? "loading" :
+              <>
+              {info!.map(item => (
+                <SearchItem key={item.id} item={item}/>
+              ))}
+              </>}
           </div>
         </div>
       </div>

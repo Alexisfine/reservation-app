@@ -17,5 +17,9 @@ public interface HotelDao extends JpaRepository<Hotel, UUID> {
 
     Integer countByHotelTypeLike(String hotelType);
 
-    List<Hotel> findByFeatured(Boolean featured);
+    List<Hotel> findByFeaturedAndCheapestPriceBetween(Boolean featured, Integer min, Integer max);
+
+    List<Hotel> findByCityIsLikeIgnoreCase(String city);
+
+    List<Hotel> findByCityIsLikeIgnoreCaseAndCheapestPriceBetween(String city, Double min, Double max);
 }

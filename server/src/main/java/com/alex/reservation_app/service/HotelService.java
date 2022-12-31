@@ -15,13 +15,13 @@ import java.util.UUID;
 @Service
 public interface HotelService {
 
-    Hotel addHotel(Hotel newHotel);
+    HotelDto addHotel(Hotel newHotel);
 
-    Hotel updateHotel(HotelDto hotelDto, UUID id);
+    HotelDto updateHotel(HotelDto hotelDto, UUID id);
 
-    Hotel getHotelById(UUID id);
+    HotelDto getHotelById(UUID id);
 
-    List<Hotel> getAllHotels();
+    List<HotelDto> getAllHotels();
 
     String deleteHotel(UUID id);
 
@@ -30,5 +30,10 @@ public interface HotelService {
 
     List<Integer>  countByType(String[] typeList);
 
-    List<Hotel> getByFeatured(boolean parseBoolean, Integer limit);
+    List<HotelDto> getByFeatured(boolean parseBoolean, Integer limit, Integer max, Integer min);
+
+
+    List<HotelDto> findByCity(String city);
+
+    List<HotelDto> findByCityAnd(String city, String max, String min);
 }

@@ -286,7 +286,7 @@ public class Hotel {
 
     }
 
-    public boolean isFeatured() {
+    public boolean getFeatured() {
         return featured;
     }
 
@@ -294,6 +294,14 @@ public class Hotel {
         this.featured = featured;
         this.updated_at = LocalDateTime.now();
 
+    }
+
+    public LocalDateTime getUpdated_at() {
+        return updated_at;
+    }
+
+    public void setUpdated_at(LocalDateTime updated_at) {
+        this.updated_at = updated_at;
     }
 
     @Override

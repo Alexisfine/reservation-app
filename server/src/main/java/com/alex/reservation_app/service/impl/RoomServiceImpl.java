@@ -3,6 +3,7 @@ package com.alex.reservation_app.service.impl;
 import com.alex.reservation_app.dao.HotelDao;
 import com.alex.reservation_app.dao.RoomDao;
 import com.alex.reservation_app.dto.AddRoomDto;
+import com.alex.reservation_app.dto.RoomDto;
 import com.alex.reservation_app.exception.HotelNotFoundException;
 import com.alex.reservation_app.exception.IllegalOperationException;
 import com.alex.reservation_app.exception.RoomNotFoundException;
@@ -30,7 +31,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Room createRoom(AddRoomDto addRoomDto, UUID id) {
+    public RoomDto createRoom(AddRoomDto addRoomDto, UUID id) {
         // Find the hotel
         Hotel hotel = hotelDao
                 .findById(id)
@@ -53,19 +54,21 @@ public class RoomServiceImpl implements RoomService {
         room.setCreatedAt(LocalDateTime.now());
         Room savedRoom = roomDao.save(room);
 
-        savedRoom.setHotel(null);
-        return savedRoom;
+        RoomDto returnRoom = mapRoomToRoomDto(savedRoom);
+        return returnRoom;
     }
 
+
+
     @Override
-    public Room updateRoomById(AddRoomDto addRoomDto, UUID uuid) {
+    public RoomDto updateRoomById(AddRoomDto addRoomDto, UUID uuid) {
         Room currentRoom = roomDao
                 .findById(uuid)
                 .orElseThrow(() -> new RoomNotFoundException("Room not found"));
         BeanUtils.copyProperties(addRoomDto, currentRoom, UpdateColumnUtil.getNullPropertyNames(addRoomDto));
-        roomDao.save(currentRoom);
-        currentRoom.setHotel(null);
-        return currentRoom;
+        Room savedRoom = roomDao.save(currentRoom);
+
+        return mapRoomToRoomDto(savedRoom);
     }
 
     @Override
@@ -80,18 +83,33 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<Room> getAllRooms() {
+    public List<RoomDto> getAllRooms() {
         List<Room> rooms = roomDao.findAll();
-        for (Room r : rooms) {
-            r.setHotel(null);
-        }
-        return rooms;
+        List<RoomDto> roomDtos = rooms
+                .stream()
+                .map(room -> mapRoomToRoomDto(room))
+                .toList();
+        return roomDtos;
     }
 
     @Override
-    public Room getRoomById(UUID id) {
+    public RoomDto getRoomById(UUID id) {
         Room room = roomDao.findById(id).orElseThrow(() -> new RoomNotFoundException("Room not found"));
-        room.setHotel(null);
-        return room;
+        return mapRoomToRoomDto(room);
+    }
+
+    private static RoomDto mapRoomToRoomDto(Room savedRoom) {
+        RoomDto returnRoom = new RoomDto(
+                savedRoom.getId(),
+                savedRoom.getHotel().getId(),
+                savedRoom.getTitle(),
+                savedRoom.getRoomNumber(),
+                savedRoom.getPrice(),
+                savedRoom.getDescription(),
+                savedRoom.getMaxPeople(),
+                savedRoom.getRoomType(),
+                savedRoom.getUnavailableDates()
+        );
+        return returnRoom;
     }
 }

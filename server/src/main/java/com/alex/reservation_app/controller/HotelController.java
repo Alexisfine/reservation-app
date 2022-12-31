@@ -78,14 +78,50 @@ public class HotelController {
         return ResponseEntity.ok(new R(integerList));
     }
 
-    @GetMapping("/find")
+    @GetMapping("/find/featured")
     public ResponseEntity<R> getByFeatured(
-            @RequestParam(name="featured") String featured,
-            @RequestParam(name="limit") String limit) {
-        List<Hotel> hotelList = hotelService
+            @RequestParam(name="featured", required = true) String featured,
+            @RequestParam(name="limit",required = true) String limit,
+            @RequestParam(name = "max", required = false) String max,
+            @RequestParam(name = "min", required = false) String min) {
+
+        int maxPrice;
+        int minPrice;
+        if (max == null) {
+            maxPrice = 999;
+        } else {
+            maxPrice = Integer.parseInt(max);
+        }
+
+        if (min == null) {
+            minPrice = 1;
+        } else {
+            minPrice = Integer.parseInt(min);
+        }
+        System.out.println(maxPrice);
+
+        List<HotelDto> hotelList = hotelService
                 .getByFeatured(
                         Boolean.parseBoolean(featured),
-                        Integer.parseInt(limit));
+                        Integer.parseInt(limit),
+                        maxPrice,
+                        minPrice);
         return ResponseEntity.ok(new R(hotelList));
+    }
+
+    @GetMapping("/find/city/{city}")
+    public ResponseEntity<R> getHotelsByCity(
+            @PathVariable(name = "city") String city) {
+        List<HotelDto> hotels = hotelService.findByCity(city);
+        return ResponseEntity.ok(new R(hotels));
+    }
+
+    @GetMapping("/find/city")
+    public ResponseEntity<R> getHotelsByCityAnd(
+            @RequestParam(name = "city") String city,
+            @RequestParam(name = "max") String max,
+            @RequestParam(name = "min") String min) {
+        List<HotelDto> hotels = hotelService.findByCityAnd(city, max, min);
+        return ResponseEntity.ok(new R(hotels));
     }
 }

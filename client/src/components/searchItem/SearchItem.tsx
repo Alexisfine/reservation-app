@@ -1,7 +1,13 @@
 import React from 'react'
 import './SearchItem.scss'
+import { IHotel } from '../../dataTypes/ApiTypes'
+import { Link } from 'react-router-dom'
 
-const SearchItem = () => {
+interface SearchItemProps {
+  item: IHotel
+}
+
+const SearchItem = ({item}:SearchItemProps) => {
   return (
     <div className="searchItem">
         <img
@@ -10,14 +16,14 @@ const SearchItem = () => {
         className="img"
         />
         <div className="desc">
-            <h1 className="title">Tower Street Apartments</h1>
-            <span className="distance">500m from center</span>
+            <h1 className="title">{item.name}</h1>
+            <span className="distance">{item.distance}m from Downtown</span>
             <span className="taxi">Free airport taxi</span>
             <span className="subtitle">
             Studio Apartment with Air conditioning
             </span>
             <span className="features">
-            Entire studio • 1 bathroom • 21m² 1 full bed
+            {item.description}
             </span>
             <span className="cancel">Free cancellation </span>
             <span className="cancelSubtitle">
@@ -25,14 +31,16 @@ const SearchItem = () => {
             </span>
         </div>
         <div className="details">
-        <div className="rating">
+       {item.rating > 0 && <div className="rating">
           <span>Excellent</span>
-          <button>8.9</button>
-        </div>
+          <button>{item.rating}</button>
+        </div>}
         <div className="text">
-          <span className="price">$112</span>
+          <span className="price">${item.cheapestPrice}</span>
           <span className="tax">Includes taxes and fees</span>
-          <button className="checkButton">See availability</button>
+          <Link to={`/hotels/${item.id}`}>
+            <button className="checkButton">See availability</button>
+          </Link>
         </div>
       </div>
 
