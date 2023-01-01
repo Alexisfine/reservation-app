@@ -4,6 +4,7 @@ import com.alex.reservation_app.dao.HotelDao;
 import com.alex.reservation_app.dto.HotelDto;
 import com.alex.reservation_app.dto.RoomDto;
 import com.alex.reservation_app.exception.HotelNotFoundException;
+import com.alex.reservation_app.model.Date;
 import com.alex.reservation_app.model.Hotel;
 import com.alex.reservation_app.model.Room;
 import com.alex.reservation_app.service.HotelService;
@@ -104,6 +105,7 @@ public class HotelServiceImpl implements HotelService {
     @Override
     public List<HotelDto> getByFeatured(boolean parseBoolean, Integer limit, Integer max, Integer min) {
         List<Hotel> hotelList = hotelDao.findByFeaturedAndCheapestPriceBetween(parseBoolean, min, max);
+        System.out.println(hotelList);
         if (hotelList.size() > limit) {
             hotelList = hotelList.subList(0, limit);
         }
@@ -157,6 +159,10 @@ public class HotelServiceImpl implements HotelService {
     }
 
     private  RoomDto mapRoomToRoomDto(Room room) {
+        for (Date date : room.getUnavailableDates()) {
+            date.setRooms(null);
+        }
+        System.out.println(room.getUnavailableDates());
         RoomDto returnRoom = new RoomDto(
                 room.getId(),
                 room.getHotel().getId(),
@@ -177,4 +183,6 @@ public class HotelServiceImpl implements HotelService {
                 .map(room -> mapRoomToRoomDto(room))
                 .collect(Collectors.toList());
     }
+
+
 }

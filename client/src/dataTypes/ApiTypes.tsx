@@ -23,6 +23,12 @@ export interface IUser {
     
 }
 
+interface unavailableDateType {
+  id: string,
+  rooms: any,
+  timeSlot: number[]
+}
+
 export interface IRoom {
   id: string,
   title: string,
@@ -31,7 +37,7 @@ export interface IRoom {
   description: string,
   maxPeople: number,
   roomType: string,
-  unavailableDates: Date[]
+  unavailableDates: unavailableDateType[]
 }
 
 export interface IDate {

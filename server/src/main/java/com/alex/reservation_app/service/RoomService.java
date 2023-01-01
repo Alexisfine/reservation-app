@@ -1,6 +1,7 @@
 package com.alex.reservation_app.service;
 
 import com.alex.reservation_app.dto.AddRoomDto;
+import com.alex.reservation_app.dto.ReserveRoomDto;
 import com.alex.reservation_app.dto.RoomDto;
 import com.alex.reservation_app.model.Room;
 
@@ -17,4 +18,6 @@ public interface RoomService {
     List<RoomDto> getAllRooms();
 
     RoomDto getRoomById(UUID id);
+
+    RoomDto reserveRoom(ReserveRoomDto reserveRoomDto, UUID id);
 }

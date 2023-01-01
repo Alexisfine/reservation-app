@@ -65,5 +65,18 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<R>(response, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<R> handleException(Exception ex) {
+        ErrorObject errorObject = new ErrorObject(
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                ex.getMessage(),
+                ZonedDateTime.now()
+        );
+        ex.printStackTrace();
+        R response = new R(errorObject);
+        return new ResponseEntity<R>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+
+    }
+
 
 }

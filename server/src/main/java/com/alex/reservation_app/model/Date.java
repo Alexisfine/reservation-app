@@ -2,6 +2,7 @@ package com.alex.reservation_app.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,15 +19,21 @@ public class Date {
     private UUID id;
 
     @ManyToMany(
-            mappedBy = "unavailableDates"
+            mappedBy = "unavailableDates",
+            fetch = FetchType.LAZY
     )
     private List<Room> rooms = new ArrayList<>();
 
 
     @Column(name = "time_slot")
-    private LocalDateTime timeSlot;
+    private LocalDate timeSlot;
 
     public Date() {
+    }
+
+    public Date(LocalDate timeSlot) {
+        this.id = UUID.randomUUID();
+        this.timeSlot = timeSlot;
     }
 
     public UUID getId() {
@@ -37,16 +44,21 @@ public class Date {
         this.id = id;
     }
 
-    public LocalDateTime getTimeSlot() {
+    public LocalDate getTimeSlot() {
         return timeSlot;
     }
 
-    public void setTimeSlot(LocalDateTime timeSlot) {
+    public void setDate(LocalDate timeSlot) {
+
         this.timeSlot = timeSlot;
     }
 
     public List<Room> getRooms() {
         return rooms;
+    }
+
+    public void setRooms(List<Room> rooms) {
+        this.rooms = rooms;
     }
 
     @Override

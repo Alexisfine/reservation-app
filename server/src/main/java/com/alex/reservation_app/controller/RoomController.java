@@ -1,6 +1,7 @@
 package com.alex.reservation_app.controller;
 
 import com.alex.reservation_app.dto.AddRoomDto;
+import com.alex.reservation_app.dto.ReserveRoomDto;
 import com.alex.reservation_app.dto.RoomDto;
 import com.alex.reservation_app.model.Room;
 import com.alex.reservation_app.service.RoomService;
@@ -9,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api/rooms/v1")
@@ -52,4 +55,13 @@ public class RoomController {
         RoomDto room = roomService.getRoomById(id);
         return ResponseEntity.ok(new R(room));
     }
+
+    @PutMapping("/reserve/{id}")
+    public ResponseEntity<R> reserveRooms(
+            @RequestBody ReserveRoomDto reserveRoomDto,
+            @PathVariable(name = "id") UUID id) {
+        RoomDto reservedRoom = roomService.reserveRoom(reserveRoomDto, id);
+        return ResponseEntity.ok(new R(reservedRoom));
+    }
+
 }

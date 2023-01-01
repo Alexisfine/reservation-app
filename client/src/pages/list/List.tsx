@@ -28,9 +28,11 @@ const List = () => {
 });
   const [min, setMin] = useState<String|undefined>();
   const [max, setMax] = useState<String|undefined>();
+  
 
   const {loading, data, error, reFetch} = useFetch(`/hotels/v1/find/city?city=${destination}&min=${min || 0}&max=${max || 999}`);
   const info = data! as IHotel[];
+  console.log(data);
 
   const handleSearch = () => {
     reFetch();

@@ -185,14 +185,22 @@ public class Room {
         return unavailableDates;
     }
 
-    public void addUnavailableDates(Date date) {
+    public void addUnavailableDate(Date date) {
         unavailableDates.add(date);
         date.getRooms().add(this);
     }
 
-    public void removeUnavailableDates(Date date) {
+    public void removeUnavailableDate(Date date) {
         unavailableDates.remove(date);
         date.getRooms().remove(this);
+    }
+
+    public void addAllUnavailableDates(List<Date> dateList) {
+        dateList.forEach(this::addUnavailableDate);
+    }
+
+    public void removeUnavailableDates(List<Date> dateList) {
+        dateList.forEach(this::removeUnavailableDate);
     }
 
     public void setId(UUID id) {
