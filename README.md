@@ -28,8 +28,8 @@ Backend includes user management, hotel management, room management, order manag
 | Hibernate              | ORM Framework             | https://hibernate.org |
 | Spring Data JPA     | Data Access Layer Framework     | https://spring.io/projects/spring-data-jpa    |
 | PostgreSQL              | Relational Database         | https://www.postgresql.org                        |
-| Logback             | Logging        | https://logback.qos.ch            |
-| Tomcat                | Web Server      | https://www.nginx.com/                         |
+| Slf4j             | Logging        | https://www.slf4j.org            |
+| Tomcat                | Web Server      | https://tomcat.apache.org/                        |
 | Hikari                | Database Connection Pool        | https://github.com/brettwooldridge/HikariCP               |
 | JWT                  | Login Authentication         | https://github.com/jwtk/jjwt                   |
 
