@@ -5,6 +5,17 @@ Hotel reservation app is a full stack project created using Spring and React, co
 Frontend includes a home page, hotel lists, hotel info page, hotel reservation, customize hotel searching, hotel recommendication features.
 Backend includes user management, hotel management, room management, order management, authorization management modules.  
 
+### Project Snapshot
+#### Home Page
+<img src="https://github.com/Alexisfine/reservation-app/blob/master/home_page_1.png" alt="drawing" width="400px"/>
+<br/>
+<img src="https://github.com/Alexisfine/reservation-app/blob/master/home_page_2.png" alt="drawing" width="500px"/>
+
+#### Hotel List Page
+<img src="https://github.com/Alexisfine/reservation-app/blob/master/hotel_list.png" alt="drawing" width="500px"/>
+
+#### Single Hotel Page 
+<img src="https://github.com/Alexisfine/reservation-app/blob/master/hotel_reservation.png" alt="drawing" width="500px"/>
 
 ### Technologies 
 
